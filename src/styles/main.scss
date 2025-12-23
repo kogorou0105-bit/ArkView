@@ -1,34 +1,305 @@
-@use "variables" as *;
+@import "variables";
 
-body {
+* {
   margin: 0;
   padding: 0;
-  background-color: $bg-color;
-  font-family: $font-stack;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  box-sizing: border-box;
+  user-select: none;
 }
 
-.container {
-  text-align: center;
+body,
+html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: $bg-dark;
+  color: #fff;
+  font-family: $ui-font;
+}
 
-  h1 {
-    color: $primary-color;
-    font-size: 2.5rem;
-    /* 简单的一个入场动画 */
-    animation: fadeIn 1s ease-out;
+/* --- 背景系统 --- */
+#bg-system {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+
+  #bg-blur-sync {
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    top: -25%;
+    left: -25%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(40px) brightness(0.4) saturate(1.8);
+    // 2. 增加平滑过渡和基础动画
+    transition: background-image 2s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: bgRotate 60s linear infinite;
+  }
+
+  .bg-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(circle at center, rgba(2, 2, 4, 0.2) 0%, $bg-dark 90%),
+      linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
+    background-size:
+      100% 100%,
+      50px 50px,
+      50px 50px;
+    z-index: 1;
+  }
+
+  .scanlines {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.2) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  #particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    opacity: 0.6;
   }
 }
 
-@keyframes fadeIn {
+@keyframes bgRotate {
   from {
-    opacity: 0;
-    transform: translateY(-20px);
+    transform: rotate(0deg);
   }
   to {
-    opacity: 1;
-    transform: translateY(0);
+    transform: rotate(360deg);
+  }
+}
+
+/* --- UI 装饰件 --- */
+.ui-decoration {
+  position: absolute;
+  padding: 20px;
+  z-index: 100;
+  color: $primary-color;
+  font-size: 12px;
+  letter-spacing: 2px;
+  opacity: 0.5;
+  text-transform: uppercase;
+
+  &.ui-top-left {
+    top: 0;
+    left: 0;
+    border-left: 2px solid $primary-color;
+  }
+  &.ui-bottom-right {
+    bottom: 0;
+    right: 0;
+    border-right: 2px solid $primary-color;
+    text-align: right;
+  }
+}
+
+/* --- 主展示舞台 --- */
+#main-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  perspective: 2500px;
+  z-index: 10;
+
+  .view-container {
+    position: relative;
+    width: 75vw;
+    max-width: 1200px;
+    aspect-ratio: 16 / 9;
+    transform-style: preserve-3d;
+  }
+}
+
+/* 主视口 */
+.image-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  border: 1px solid $glass-border;
+  box-shadow: 0 0 80px rgba(0, 242, 255, 0.15);
+
+  .main-image {
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition:
+      transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.6s ease;
+  }
+
+  .glitch-flash {
+    animation: glitch-anim 0.3s linear;
+  }
+}
+
+@keyframes glitch-anim {
+  0% {
+    filter: hue-rotate(0deg) brightness(1);
+    transform: scale(1.05);
+  }
+  20% {
+    filter: hue-rotate(90deg) brightness(2);
+    transform: translate(-5px, 5px);
+  }
+  40% {
+    filter: hue-rotate(-90deg) contrast(2);
+    transform: translate(5px, -5px);
+  }
+  100% {
+    filter: none;
+    transform: scale(1);
+  }
+}
+
+@keyframes bgFloat {
+  0% {
+    transform: scale(1.1) translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: scale(1.3) translate(-2%, -2%) rotate(3deg);
+  }
+}
+
+/* --- 信息 UI --- */
+.info-layer {
+  position: absolute;
+  left: -80px;
+  top: 50%;
+  transform: translateZ(150px) translateY(-50%);
+  width: 450px;
+  pointer-events: none;
+  z-index: 20;
+
+  .serial-num {
+    font-family: $header-font;
+    font-size: 8rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.2); // 将 0.05 改为 0.2，增加可见度
+    line-height: 0.6;
+    z-index: -1;
+    letter-spacing: -10px;
+  }
+
+  .title-box {
+    background: $info-box-bg;
+    backdrop-filter: blur(20px);
+    padding: 2.5rem;
+    border-left: 6px solid $primary-color;
+    box-shadow: 20px 20px 60px rgba(0, 0, 0, 0.8);
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 90% 100%, 0 100%);
+  }
+
+  .title-text {
+    font-family: $header-font;
+    font-size: 2rem;
+    color: $primary-color;
+    text-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
+    margin-bottom: 10px;
+  }
+
+  .desc-text {
+    font-size: 14px;
+    color: #999;
+    line-height: 1.6;
+    text-transform: uppercase;
+  }
+}
+
+/* --- 交互控制 --- */
+.nav-controls {
+  position: absolute;
+  bottom: -80px;
+  right: 0;
+  display: flex;
+  gap: 20px;
+  transform: translateZ(100px);
+
+  .nav-btn {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid $glass-border;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: $primary-color;
+
+    &:hover {
+      background: $primary-color;
+      color: #000;
+      box-shadow: 0 0 30px $primary-color;
+      transform: scale(1.1);
+    }
+
+    svg {
+      width: 30px;
+      height: 30px;
+      fill: currentColor;
+    }
+  }
+}
+
+.indicators {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  gap: 15px;
+  transform: translateZ(120px);
+
+  .indicator-dot {
+    width: 40px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    transform: skewX(-30deg);
+    transition: 0.4s;
+    cursor: pointer;
+
+    &.active {
+      background: $primary-color;
+      width: 70px;
+      box-shadow: 0 0 20px $primary-color;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .main-stage .view-container {
+    width: 95vw;
+  }
+  .info-layer {
+    width: 300px;
+    left: 10px;
+    top: 80%;
+  }
+  .info-layer .serial-num {
+    font-size: 5rem;
   }
 }

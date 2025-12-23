@@ -1,3 +1,16 @@
-$primary-color: #ff6b6b;
-$bg-color: #f7f1e3;
-$font-stack: "Helvetica Neue", sans-serif;
+:root {
+  --primary-color: #00f2ff; // 默认颜色
+}
+
+$primary-color: var(--primary-color); // 让 SCSS 引用该变量
+$accent-color: #ff0055;
+$bg-dark: #020204;
+
+// 玻璃拟态与边框
+$glass-bg: rgba(0, 242, 255, 0.03);
+$glass-border: rgba(0, 242, 255, 0.15);
+$info-box-bg: rgba(5, 5, 8, 0.85);
+
+// 字体族
+$ui-font: "Share Tech Mono", monospace;
+$header-font: "Orbitron", sans-serif;

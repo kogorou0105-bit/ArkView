@@ -3,15 +3,76 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanilla Creative Starter</title>
-    <link rel="stylesheet" href="./styles/main.scss" />
+    <title>ArkView</title>
+    <!-- 字体依赖 -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <!-- 样式链接 (在实际开发中 SCSS 会编译为 main.css) -->
+    <link rel="stylesheet" href="styles/main.scss" />
+    <!-- 这里为了方便演示，直接引入了样式逻辑的编译预留点，如果在本地开发请确保 SCSS 已编译 -->
   </head>
   <body>
-    <main class="container">
-      <h1>Vanilla JS + Parcel + SCSS 🚀</h1>
-      <p>Start creating something amazing!</p>
-    </main>
+    <!-- 背景系统 -->
+    <div id="bg-system">
+      <div id="bg-blur-sync"></div>
+      <div class="bg-overlay"></div>
+      <div class="scanlines"></div>
+      <div id="particles-js"></div>
+    </div>
 
-    <script type="module" src="./scripts/app.js"></script>
+    <!-- UI 装饰装饰性文字 -->
+    <div class="ui-decoration ui-top-left">
+      STATUS: ONLINE<br />
+      SEC_LEVEL: ALPHA<br />
+      LOC: [31.2304, 121.4737]
+    </div>
+    <div class="ui-decoration ui-bottom-right">
+      RHODES ISLAND TERMINAL v3.0.4<br />
+      © 2025 HYPERGRYPH / NETWORK DIV
+    </div>
+
+    <!-- 主交互舞台 -->
+    <section id="main-stage">
+      <div class="view-container" id="view-container">
+        <!-- 信息层 -->
+        <div class="info-layer">
+          <div class="serial-num" id="serial-num">01</div>
+          <div class="title-box">
+            <div class="title-text" id="title-text">LOADING...</div>
+            <div class="desc-text" id="desc-text">
+              PRTS_INITIALIZING_DATA_STREAM...
+            </div>
+          </div>
+        </div>
+
+        <!-- 主图视口 -->
+        <div class="image-viewport">
+          <div class="main-image" id="main-image"></div>
+        </div>
+
+        <!-- 导航控制 -->
+        <div class="nav-controls">
+          <div class="nav-btn" id="prev-btn">
+            <svg viewBox="0 0 24 24">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+            </svg>
+          </div>
+          <div class="nav-btn" id="next-btn">
+            <svg viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- 指示器 -->
+        <div class="indicators" id="indicators"></div>
+      </div>
+    </section>
+
+    <!-- 脚本依赖 -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="scripts/app.js" type="module"></script>
   </body>
 </html>
