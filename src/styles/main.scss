@@ -1,0 +1,34 @@
+@use "variables" as *;
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $bg-color;
+  font-family: $font-stack;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  text-align: center;
+
+  h1 {
+    color: $primary-color;
+    font-size: 2.5rem;
+    /* 简单的一个入场动画 */
+    animation: fadeIn 1s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
